@@ -3,7 +3,6 @@ import logging
 from neo4j import GraphDatabase, RoutingControl
 from neo4j.exceptions import DriverError, Neo4jError
 
-
 class App:
 
     def __init__(self, uri, user, password, database=None):
