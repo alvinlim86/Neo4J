@@ -1,0 +1,39 @@
+from langchain.docstore.document import Document
+from langchain.text_splitter import CharacterTextSplitter
+from langchain_community.document_loaders import TextLoader
+from langchain_community.vectorstores import Neo4jVector
+
+#from langchain_openai import OpenAIEmbeddings
+#from langchain_ollama import OllamaEmbeddings
+#from langchain_huggingface import HuggingFaceEmbeddings
+import ollama
+
+
+
+# Document - load, chunk, split
+loader = TextLoader('state_of_the_union.txt')
+documents = loader.load()
+text_splitter = CharacterTextSplitter(chunk_size=1000, chunk_overlap=0)
+docs = text_splitter.split_documents(documents)
+
+# Embeddings
+#embeddings = OpenAIEmbeddings()
+#embeddings = OllamaEmbeddings(model="llama3.2")
+#embeddings = SentenceTransformer('sentence-transformers/all-MiniLM-L6-v2')
+#embeddings = HuggingFaceEmbeddings(model_name="sentence-transformers/all-MiniLM-L6-v2")
+embeddings = ollama.embeddings(model="llama3.2")
+
+# The Neo4jVector Module will connect to Neo4j and create a vector index if needed.
+NEO4J_url='neo4j+s://ff389a88.databases.neo4j.io'
+NEO4J_USERNAME='neo4j'
+NEO4J_PASSWORD='2kSOQH70unww6GZ52gtrbVHd4N-GNutSH0fbe6nPdj4'
+
+db = Neo4jVector.from_documents(
+    docs, 
+    embedding=embeddings, 
+    url=NEO4J_url, 
+    username=NEO4J_USERNAME, 
+    password=NEO4J_PASSWORD)
+
+query = "What did the president say about Ketanji Brown Jackson"
+docs_with_score = db.similarity_search_with_score(query, k=2)
