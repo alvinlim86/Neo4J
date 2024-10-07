@@ -1,0 +1,124 @@
+// Create nodes for entities
+CREATE (storageTank:Entity {name: 'Storage Tank', description: 'A tank for storing ammonia-hydrogen mixture'});
+CREATE (pipe:Entity {name: 'Pipe', description: 'A conduit for transporting fluids'});
+CREATE (condenser:Entity {name: 'Condenser', description: 'A device for condensing vapor'});
+CREATE (pump:Entity {name: 'Pump', description: 'A device for moving fluids'});
+CREATE (valve:Entity {name: 'Valve', description: 'A device for controlling fluid flow'});
+CREATE (heatExchanger:Entity {name: 'Heat Exchanger', description: 'A device for transferring heat'});
+CREATE (compressor:Entity {name: 'Compressor', description: 'A device for increasing pressure'});
+CREATE (reactor:Entity {name: 'Reactor', description: 'A device for chemical reactions'});
+
+// Create nodes for parameters
+CREATE (volume:Parameter {name: 'Volume'});
+CREATE (pressure:Parameter {name: 'Pressure'});
+CREATE (temperature:Parameter {name: 'Temperature'});
+CREATE (material:Parameter {name: 'Material'});
+CREATE (insulation:Parameter {name: 'Insulation'});
+CREATE (flowRate:Parameter {name: 'Flow Rate'});
+CREATE (diameter:Parameter {name: 'Diameter'});
+CREATE (inletTemperature:Parameter {name: 'Inlet Temperature'});
+CREATE (outletTemperature:Parameter {name: 'Outlet Temperature'});
+CREATE (heatTransferRate:Parameter {name: 'Heat Transfer Rate'});
+CREATE (efficiency:Parameter {name: 'Efficiency'});
+CREATE (powerConsumption:Parameter {name: 'Power Consumption'});
+CREATE (speed:Parameter {name: 'Speed'});
+CREATE (openingPosition:Parameter {name: 'Opening Position'});
+CREATE (catalystType:Parameter {name: 'Catalyst Type'});
+CREATE (conversionRate:Parameter {name: 'Conversion Rate'});
+CREATE (residenceTime:Parameter {name: 'Residence Time'});
+
+// Create relationships between entities and parameters
+CREATE (storageTank)-[:HAS_PARAMETER]->(volume);
+CREATE (storageTank)-[:HAS_PARAMETER]->(pressure);
+CREATE (storageTank)-[:HAS_PARAMETER]->(temperature);
+CREATE (storageTank)-[:HAS_PARAMETER]->(material);
+CREATE (storageTank)-[:HAS_PARAMETER]->(insulation);
+
+CREATE (pipe)-[:HAS_PARAMETER]->(flowRate);
+CREATE (pipe)-[:HAS_PARAMETER]->(pressure);
+CREATE (pipe)-[:HAS_PARAMETER]->(temperature);
+CREATE (pipe)-[:HAS_PARAMETER]->(diameter);
+CREATE (pipe)-[:HAS_PARAMETER]->(material);
+
+CREATE (condenser)-[:HAS_PARAMETER]->(inletTemperature);
+CREATE (condenser)-[:HAS_PARAMETER]->(outletTemperature);
+CREATE (condenser)-[:HAS_PARAMETER]->(pressure);
+CREATE (condenser)-[:HAS_PARAMETER]->(heatTransferRate);
+CREATE (condenser)-[:HAS_PARAMETER]->(efficiency);
+
+CREATE (pump)-[:HAS_PARAMETER]->(flowRate);
+CREATE (pump)-[:HAS_PARAMETER]->(pressure);
+CREATE (pump)-[:HAS_PARAMETER]->(powerConsumption);
+CREATE (pump)-[:HAS_PARAMETER]->(efficiency);
+CREATE (pump)-[:HAS_PARAMETER]->(speed);
+
+CREATE (valve)-[:HAS_PARAMETER]->(flowRate);
+CREATE (valve)-[:HAS_PARAMETER]->(pressure);
+CREATE (valve)-[:HAS_PARAMETER]->(openingPosition);
+CREATE (valve)-[:HAS_PARAMETER]->(material);
+CREATE (valve)-[:HAS_PARAMETER]->(actuationType);
+
+CREATE (heatExchanger)-[:HAS_PARAMETER]->(inletTemperature);
+CREATE (heatExchanger)-[:HAS_PARAMETER]->(outletTemperature);
+CREATE (heatExchanger)-[:HAS_PARAMETER]->(pressure);
+CREATE (heatExchanger)-[:HAS_PARAMETER]->(heatTransferRate);
+CREATE (heatExchanger)-[:HAS_PARAMETER]->(efficiency);
+
+CREATE (compressor)-[:HAS_PARAMETER]->(inletPressure);
+CREATE (compressor)-[:HAS_PARAMETER]->(outletPressure);
+CREATE (compressor)-[:HAS_PARAMETER]->(flowRate);
+CREATE (compressor)-[:HAS_PARAMETER]->(powerConsumption);
+CREATE (compressor)-[:HAS_PARAMETER]->(efficiency);
+
+CREATE (reactor)-[:HAS_PARAMETER]->(temperature);
+CREATE (reactor)-[:HAS_PARAMETER]->(pressure);
+CREATE (reactor)-[:HAS_PARAMETER]->(catalystType);
+CREATE (reactor)-[:HAS_PARAMETER]->(conversionRate);
+CREATE (reactor)-[:HAS_PARAMETER]->(residenceTime);
+
+// Create nodes for deviation keywords
+CREATE (noFlow:Deviation {name: 'No Flow', description: 'No fluid movement'});
+CREATE (lowFlow:Deviation {name: 'Low Flow', description: 'Less than normal fluid movement'});
+CREATE (highFlow:Deviation {name: 'High Flow', description: 'More than normal fluid movement'});
+CREATE (lowTemperature:Deviation {name: 'Low Temperature', description: 'Less than normal heat'});
+CREATE (highTemperature:Deviation {name: 'High Temperature', description: 'More than normal heat'});
+CREATE (lowPressure:Deviation {name: 'Low Pressure', description: 'Less than normal force'});
+CREATE (highPressure:Deviation {name: 'High Pressure', description: 'More than normal force'});
+CREATE (lowHeatTransfer:Deviation {name: 'Low Heat Transfer', description: 'Less than normal heat transfer'});
+CREATE (highHeatTransfer:Deviation {name: 'High Heat Transfer', description: 'More than normal heat transfer'});
+CREATE (lowEfficiency:Deviation {name: 'Low Efficiency', description: 'Less than normal efficiency'});
+CREATE (highEfficiency:Deviation {name: 'High Efficiency', description: 'More than normal efficiency'});
+CREATE (lowPower:Deviation {name: 'Low Power', description: 'Less than normal power consumption'});
+CREATE (highPower:Deviation {name: 'High Power', description: 'More than normal power consumption'});
+CREATE (lowSpeed:Deviation {name: 'Low Speed', description: 'Less than normal speed'});
+CREATE (highSpeed:Deviation {name: 'High Speed', description: 'More than normal speed'});
+CREATE (fullyOpen:Deviation {name: 'Fully Open', description: 'Valve is fully open'});
+CREATE (fullyClosed:Deviation {name: 'Fully Closed', description: 'Valve is fully closed'});
+CREATE (partiallyOpen:Deviation {name: 'Partially Open', description: 'Valve is partially open'});
+
+// Create relationships between parameters and deviations
+CREATE (flowRate)-[:HAS_DEVIATION]->(noFlow);
+CREATE (flowRate)-[:HAS_DEVIATION]->(lowFlow);
+CREATE (flowRate)-[:HAS_DEVIATION]->(highFlow);
+
+CREATE (temperature)-[:HAS_DEVIATION]->(lowTemperature);
+CREATE (temperature)-[:HAS_DEVIATION]->(highTemperature);
+
+CREATE (pressure)-[:HAS_DEVIATION]->(lowPressure);
+CREATE (pressure)-[:HAS_DEVIATION]->(highPressure);
+
+CREATE (heatTransferRate)-[:HAS_DEVIATION]->(lowHeatTransfer);
+CREATE (heatTransferRate)-[:HAS_DEVIATION]->(highHeatTransfer);
+
+CREATE (efficiency)-[:HAS_DEVIATION]->(lowEfficiency);
+CREATE (efficiency)-[:HAS_DEVIATION]->(highEfficiency);
+
+CREATE (powerConsumption)-[:HAS_DEVIATION]->(lowPower);
+CREATE (powerConsumption)-[:HAS_DEVIATION]->(highPower);
+
+CREATE (speed)-[:HAS_DEVIATION]->(lowSpeed);
+CREATE (speed)-[:HAS_DEVIATION]->(highSpeed);
+
+CREATE (openingPosition)-[:HAS_DEVIATION]->(fullyOpen);
+CREATE (openingPosition)-[:HAS_DEVIATION]->(fullyClosed);
+CREATE (openingPosition)-[:HAS_DEVIATION]->(partiallyOpen);
